@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaData Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <section class="contact-form">
+        <h1>GOB Metadata Form</h1>
+
+        <form>
+
+            <div class="input-group">
+                <input id="tier1" name="tier" type="radio" value="1" />
+                <label class="inline" for="tier1">Tier 1</label>
+
+                <input id="tier2" name="tier" type="radio" value="2" />
+                <label class="inline" for="tier2">Tier 2</label>
+
+                <input id="tier3" name="tier" type="radio" value="3" />
+                <label class="inline" for="tier3">Tier 3</label>
+            </div>
+
+            <div class="input-group">
+                <label for="title">Title</label>
+                <input id="title" name="title" type="text" value="GOB #" />
+            </div>
+
+            <h2>Attributes</h2>
+            <div class="input-group">
+                <label for="types">Type</label>
+                <input list="types" name="type">
+                <datalist id="types">
+                    <option value="Avian">
+                    <option value="Greek">
+                    <option value="Feline">
+                    <option value="Canine">
+                    <option value="Skull">
+                    <option value="Devi">
+                    <option value="Monke">
+                </datalist>
+            </div>
+
+            <div class="input-group">
+                <label for="colors">Color</label>
+                <input list="colors" name="color">
+                <datalist id="colors">
+                    <option value="Red">
+                    <option value="Blue">
+                    <option value="Light Blue">
+                    <option value="Dark Blue">
+                    <option value="Cyan">
+                    <option value="Yellow">
+                    <option value="Purple">
+                    <option value="Pink">
+                    <option value="Green">
+                    <option value="Black">
+                    <option value="Brown">
+                </datalist>
+            </div>
+
+            <div class="input-group">
+                <label for="eyes">Eyes</label>
+                <input list="eyes" name="eyes">
+                <datalist id="eyes">
+                    <option value="Normal">
+                    <option value="Lazy">
+                    <option value="Angry">
+                    <option value="Steampunk">
+                    <option value="Cyberpunk">
+                    <option value="Oracle">
+                    <option value="Lens">
+                    <option value="Lens Gold">
+                    <option value="Steampunk2">
+                    <option value="Steampunk Gold">
+                    <option value="Normal Gold">
+                    <option value="Cyberpunk Gold">
+                </datalist>
+            </div>
+
+            <div class="input-group">
+                <label for="headgears">Headgear</label>
+                <input list="headgears" name="headgear">
+                <datalist id="headgears">
+                    <option value="Gold Cyan">
+                    <option value="Gold Red">
+                    <option value="Gold Yellow">
+                    <option value="Gold Black">
+                    <option value="Egyptian">
+                    <option value="Beads">
+                </datalist>
+            </div>
+
+            <input name="secret" type="hidden" value="1b3a9374-1a8e-434e-90ab-21aa7b9b80e7" />
+            <button type="submit">Get It!</button>
+        </form>
+    </section>
+
+    <a id="downloadAnchorElem" style="display:none"></a>
+    <div class="results">
+        <h2>Form Data</h2>
+        <pre></pre>
+    </div>
+    <script>
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const data = new FormData(event.target);
+
+            const formJSON = Object.fromEntries(data.entries());
+
+            console.log(Object.fromEntries(data.entries()));
+
+            let Jsonboi = {
+                "title": formJSON.title,
+                "attributes": [
+                    {
+                        "Edition": "Genesis"
+                    },
+                    {
+                        "Tier": formJSON.tier
+                    },
+                    {
+                        "Type": formJSON.type
+                    },
+                    {
+                        "Color": formJSON.color
+                    },
+                    {
+                        "Eyes": formJSON.eyes
+                    },
+                    {
+                        "Headgear": formJSON.headgear
+                    }
+                ]
+            }
+
+            console.log(Jsonboi);
+
+            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(Jsonboi));
+            const dlAnchorElem = document.getElementById('downloadAnchorElem');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", Jsonboi.title+".json");
+            dlAnchorElem.click();
+
+            const results = document.querySelector('.results pre');
+            results.innerText = JSON.stringify(Jsonboi, null, 2);
+        }
+
+        const form = document.querySelector('.contact-form');
+        form.addEventListener('submit', handleFormSubmit);
+    </script>
+
+</body>
+
+</html>
