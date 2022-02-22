@@ -100,6 +100,45 @@
                 </datalist>
             </div>
 
+            <div class="input-group">
+
+                <label for="weapons">Weapons <input type="checkbox" class="inline" name="wbox" id="wbox"
+                        onclick="toggleWeaponState()"></label>
+
+                <input list="weapons" id="wpin" name="weapon" disabled>
+                <datalist id="weapons">
+                    <option value="Hammer 1">
+                    <option value="Hammer 2">
+                    <option value="Hammer 3">
+                    <option value="Trident 1">
+                    <option value="Trident 2">
+                    <option value="Trident 3">
+                    <option value="Vajra 1">
+                    <option value="Vajra 2">
+                    <option value="Vajra 3">
+                    <option value="Mace 1">
+                    <option value="Mace 2">
+                    <option value="Bolt 1">
+                    <option value="Bolt 2">
+
+                </datalist>
+            </div>
+
+            <div class="input-group">
+
+                <label for="facialhair">Facial Hair <input type="checkbox" class="inline" name="fbox" id="fbox"
+                        onclick="toggleBeardState()"></label>
+
+                <input list="facialhairs" id="fpin" name="facialhair" disabled>
+                <datalist id="facialhairs">
+                    <option value="Moustache">
+                    <option value="Moustache and Beard">
+                    <option value="Moustache and Goatee">
+                    <option value="Beard">
+                    <option value="Goatee">
+                </datalist>
+            </div>
+
             <input name="secret" type="hidden" value="1b3a9374-1a8e-434e-90ab-21aa7b9b80e7" />
             <button type="submit">Get It!</button>
         </form>
@@ -111,6 +150,36 @@
         <pre></pre>
     </div>
     <script>
+
+        let wbool = false;
+        const wpin = document.getElementById("wpin");
+
+        let fbool = false;
+        const fpin = document.getElementById("fpin");
+
+
+        function toggleWeaponState() {
+            if (wpin.disabled) {
+                wpin.disabled = false;
+                wbool = true;
+            } else {
+                wpin.disabled = true;
+                wbool = false;
+            }
+
+        }
+
+        function toggleBeardState(){
+            if (fpin.disabled) {
+                fpin.disabled = false;
+                fbool = true;
+            } else {
+                fpin.disabled = true;
+                fbool = false;
+            }
+        }
+
+
         function handleFormSubmit(event) {
             event.preventDefault();
 
@@ -118,7 +187,7 @@
 
             const formJSON = Object.fromEntries(data.entries());
 
-            console.log(Object.fromEntries(data.entries()));
+
 
             let Jsonboi = {
                 "title": formJSON.title,
@@ -144,12 +213,21 @@
                 ]
             }
 
-            console.log(Jsonboi);
 
+            if (wbool) {
+                Jsonboi.attributes.push({ "Weapon": formJSON.weapon });
+            }
+
+            if (fbool) {
+                Jsonboi.attributes.push({ "Facial Hair": formJSON.facialhair });
+            }
+
+
+            console.log(Jsonboi);
             let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(Jsonboi));
             const dlAnchorElem = document.getElementById('downloadAnchorElem');
             dlAnchorElem.setAttribute("href", dataStr);
-            dlAnchorElem.setAttribute("download", Jsonboi.title+".json");
+            dlAnchorElem.setAttribute("download", Jsonboi.title + ".json");
             dlAnchorElem.click();
 
             const results = document.querySelector('.results pre');
